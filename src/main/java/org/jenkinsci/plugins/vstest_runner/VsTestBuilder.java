@@ -470,7 +470,15 @@ public class VsTestBuilder extends Builder {
      */
     private String getFrameworkArgument(EnvVars env, AbstractBuild<?, ?> build) {
         if (FRAMEWORK_35.equals(framework) || FRAMEWORK_40.equals(framework) || FRAMEWORK_45.equals(framework)) {
-            return framework;
+            if(!useVs2017Plus){
+            	return framework;
+            }
+            else {
+            	char[] chars = framework.toCharArray();
+            	chars[0] = Character.toUpperCase(chars[0]);
+            	return new String(chars);
+            }
+            	
         } else if (FRAMEWORK_OTHER.equals(framework)) {
             return replaceMacro(otherFramework, env, build);
         } else {
