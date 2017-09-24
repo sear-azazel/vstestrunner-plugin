@@ -89,6 +89,7 @@ public class VsTestBuilder extends Builder {
     private final boolean enablecodecoverage;
     private final boolean inIsolation;
     private final boolean useVsixExtensions;
+    private final boolean useVs2017Plus;
     private final String platform;
     private final String otherPlatform;
     private final String framework;
@@ -108,6 +109,7 @@ public class VsTestBuilder extends Builder {
      * @param enablecodecoverage
      * @param inIsolation
      * @param useVsixExtensions
+     * @param useVs2017Plus
      * @param platform
      * @param otherPlatform
      * @param framework
@@ -118,7 +120,7 @@ public class VsTestBuilder extends Builder {
      * @param failBuild
      */
     @DataBoundConstructor
-    public VsTestBuilder(String vsTestName, String testFiles, String settings, String tests, String testCaseFilter, boolean enablecodecoverage, boolean inIsolation, boolean useVsixExtensions, String platform, String otherPlatform, String framework, String otherFramework, String logger, String otherLogger, String cmdLineArgs, boolean failBuild) {
+    public VsTestBuilder(String vsTestName, String testFiles, String settings, String tests, String testCaseFilter, boolean enablecodecoverage, boolean inIsolation, boolean useVsixExtensions, boolean useVs2017Plus, String platform, String otherPlatform, String framework, String otherFramework, String logger, String otherLogger, String cmdLineArgs, boolean failBuild) {
         this.vsTestName = vsTestName;
         this.testFiles = testFiles;
         this.settings = settings;
@@ -127,6 +129,7 @@ public class VsTestBuilder extends Builder {
         this.enablecodecoverage = enablecodecoverage;
         this.inIsolation = inIsolation;
         this.useVsixExtensions = useVsixExtensions;
+        this.useVs2017Plus = useVs2017Plus;
         this.platform = platform;
         this.otherPlatform = PLATFORM_OTHER.equals(this.platform) ? otherPlatform : "";
         this.framework = framework;
@@ -165,6 +168,10 @@ public class VsTestBuilder extends Builder {
         return useVsixExtensions;
     }
 
+    public boolean isUseVs2017Plus() {
+    	return useVs2017Plus;
+    }
+    
     public String getPlatform() {
         return platform;
     }
@@ -312,10 +319,13 @@ public class VsTestBuilder extends Builder {
         }
 
         // This makes vstest.console.exe process use or skip the VSIX extensions installed (if any) in the test run.
-        if (useVsixExtensions) {
-            args.add("/UseVsixExtensions:true");
-        } else {
-            args.add("/UseVsixExtensions:false");
+        if(!useVs2017Plus)
+        {
+	        if (useVsixExtensions) {
+	            args.add("/UseVsixExtensions:true");
+	        } else {
+	            args.add("/UseVsixExtensions:false");
+	        }
         }
 
         // Target platform architecture to be used for test execution.
