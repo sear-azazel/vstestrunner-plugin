@@ -31,6 +31,7 @@ import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
 import hudson.model.Result;
 import hudson.slaves.EnvironmentVariablesNodeProperty;
+import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import static org.junit.Assert.assertTrue;
@@ -115,6 +116,6 @@ public class FileSetTest {
         String s = FileUtils.readFileToString(build.getLogFile());
         //assertTrue(s.contains("no file matches the pattern **\\*.Tests.dll"));
         //String content = build.getWorkspace().child("AssemblyVersion.cs").readToString();
-        assertTrue(s.contains("aaa/aaa.Tests.dll"));
+        assertTrue(s.contains("aaa" + File.separator + "aaa.Tests.dll"));
     }
 }
