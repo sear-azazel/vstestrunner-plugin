@@ -43,6 +43,10 @@
                         checked="${instance.useVsixExtensions}" default="false" />
         </f:entry>
 
+		<f:entry title="${%UseVs2017Plus}" field="useVs2017Plus">
+            <f:checkbox name="VsTestBuilder.useVs2017Plus" value="${instance.useVs2017Plus}"
+                        checked="${instance.useVs2017Plus}" default="false" />
+        </f:entry>
         <f:entry title="${%Platform}" field="platform">
             <br />
             <label>

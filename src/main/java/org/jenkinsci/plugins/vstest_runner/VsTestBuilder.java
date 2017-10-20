@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.annotation.PostConstruct;
+
 import hudson.CopyOnWrite;
 import hudson.EnvVars;
 import hudson.Extension;
@@ -24,6 +26,7 @@ import hudson.util.ArgumentListBuilder;
 
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  *
@@ -81,60 +84,22 @@ public class VsTestBuilder extends Builder {
      */
     private static final String LOGGER_OTHER = "Other";
 
-    private final String vsTestName;
-    private final String testFiles;
-    private final String settings;
-    private final String tests;
-    private final String testCaseFilter;
-    private final boolean enablecodecoverage;
-    private final boolean inIsolation;
-    private final boolean useVsixExtensions;
-    private final String platform;
-    private final String otherPlatform;
-    private final String framework;
-    private final String otherFramework;
-    private final String logger;
-    private final String otherLogger;
-    private final String cmdLineArgs;
-    private final boolean failBuild;
+    String vsTestName, testFiles, settings, tests, testCaseFilter, platform, otherPlatform,
+           framework, otherFramework, logger, otherLogger, cmdLineArgs;
+    boolean enablecodecoverage, inIsolation, useVsixExtensions, useVs2017Plus, failBuild;
 
-    /**
-     *
-     * @param vsTestName
-     * @param testFiles
-     * @param settings
-     * @param tests
-     * @param testCaseFilter
-     * @param enablecodecoverage
-     * @param inIsolation
-     * @param useVsixExtensions
-     * @param platform
-     * @param otherPlatform
-     * @param framework
-     * @param otherFramework
-     * @param logger
-     * @param otherLogger
-     * @param cmdLineArgs
-     * @param failBuild
-     */
+    @PostConstruct
+    public void SetOthers() {
+    	//can't add these lines into the setters.
+    	//order isn't guaranteed AFAIK and logic may change
+    	otherPlatform = PLATFORM_OTHER.equals(platform) ? otherPlatform : "";
+    	otherFramework = FRAMEWORK_OTHER.equals(framework) ? otherFramework : "";
+    	otherLogger = LOGGER_OTHER.equals(logger) ? otherLogger : "";
+    }
+    
     @DataBoundConstructor
-    public VsTestBuilder(String vsTestName, String testFiles, String settings, String tests, String testCaseFilter, boolean enablecodecoverage, boolean inIsolation, boolean useVsixExtensions, String platform, String otherPlatform, String framework, String otherFramework, String logger, String otherLogger, String cmdLineArgs, boolean failBuild) {
-        this.vsTestName = vsTestName;
-        this.testFiles = testFiles;
-        this.settings = settings;
-        this.tests = tests;
-        this.testCaseFilter = testCaseFilter;
-        this.enablecodecoverage = enablecodecoverage;
-        this.inIsolation = inIsolation;
-        this.useVsixExtensions = useVsixExtensions;
-        this.platform = platform;
-        this.otherPlatform = PLATFORM_OTHER.equals(this.platform) ? otherPlatform : "";
-        this.framework = framework;
-        this.otherFramework = FRAMEWORK_OTHER.equals(this.framework) ? otherFramework : "";
-        this.logger = logger;
-        this.otherLogger = LOGGER_OTHER.equals(this.logger) ? otherLogger : "";
-        this.cmdLineArgs = cmdLineArgs;
-        this.failBuild = failBuild;
+    public VsTestBuilder() {
+        
     }
 
     public String getVsTestName() {
@@ -165,6 +130,10 @@ public class VsTestBuilder extends Builder {
         return useVsixExtensions;
     }
 
+    public boolean isUseVs2017Plus() {
+    	return useVs2017Plus;
+    }
+    
     public String getPlatform() {
         return platform;
     }
@@ -201,6 +170,93 @@ public class VsTestBuilder extends Builder {
         return failBuild;
     }
 
+    @DataBoundSetter
+    public void setVsTestName(String vsTestName)
+    {
+    	this.vsTestName = vsTestName;
+     }       
+    @DataBoundSetter
+    public void setTestFiles(String testFiles)
+    {
+    	this.testFiles = testFiles;
+     }       
+    @DataBoundSetter
+    public void setSettings(String settings)
+    {
+           this.settings = settings;
+    }       
+    @DataBoundSetter
+    public void setTests(String tests)
+    {
+            this.tests = tests;
+    }       
+    @DataBoundSetter
+    public void setTestCaseFilter(String testCaseFilter)
+    {
+            this.testCaseFilter = testCaseFilter;
+    }
+    @DataBoundSetter
+    public void setOtherPlatform(String otherPlatform)
+    {
+            this.otherPlatform = otherPlatform;
+    }       
+    @DataBoundSetter
+    public void setOtherFramework(String otherFramework)
+    {       
+            this.otherFramework = otherFramework;
+     }       
+    @DataBoundSetter
+    public void setOtherLogger(String otherLogger)
+    {      
+            this.otherLogger = otherLogger;
+     } 
+    @DataBoundSetter
+    public void setPlatform(String platform)
+    {
+            this.platform = platform;
+    }       
+    @DataBoundSetter
+    public void setFramework(String framework)
+    {       
+            this.framework = framework;
+     }       
+    @DataBoundSetter
+    public void setLogger(String logger)
+    {      
+            this.logger = logger;
+     }       
+    @DataBoundSetter
+    public void setCmdLineArgs(String cmdLineArgs)
+    {      
+            this.cmdLineArgs = cmdLineArgs;
+    }       
+    @DataBoundSetter
+    public void setEnablecodecoverage(boolean enablecodecoverage)
+    {
+            this.enablecodecoverage = enablecodecoverage;
+    }       
+    @DataBoundSetter
+    public void setInIsolation(boolean inIsolation)
+    {
+            this.inIsolation = inIsolation;
+    }       
+    @DataBoundSetter
+    public void setUseVsixExtensions(boolean useVsixExtensions)
+    {
+            this.useVsixExtensions = useVsixExtensions;
+    }       
+    @DataBoundSetter
+    public void setUseVs2017Plus(boolean useVs2017Plus)
+    {
+            this.useVs2017Plus = useVs2017Plus;
+    }
+    @DataBoundSetter
+    public void setFailBuild(boolean failBuild)
+    {
+            this.failBuild = failBuild;
+    }       
+
+    
     public VsTestInstallation getVsTest() {
         for (VsTestInstallation i : DESCRIPTOR.getInstallations()) {
             if (vsTestName != null && i.getName().equals(vsTestName)) {
@@ -312,10 +368,13 @@ public class VsTestBuilder extends Builder {
         }
 
         // This makes vstest.console.exe process use or skip the VSIX extensions installed (if any) in the test run.
-        if (useVsixExtensions) {
-            args.add("/UseVsixExtensions:true");
-        } else {
-            args.add("/UseVsixExtensions:false");
+        if(!useVs2017Plus)
+        {
+	        if (useVsixExtensions) {
+	            args.add("/UseVsixExtensions:true");
+	        } else {
+	            args.add("/UseVsixExtensions:false");
+	        }
         }
 
         // Target platform architecture to be used for test execution.
@@ -460,7 +519,15 @@ public class VsTestBuilder extends Builder {
      */
     private String getFrameworkArgument(EnvVars env, AbstractBuild<?, ?> build) {
         if (FRAMEWORK_35.equals(framework) || FRAMEWORK_40.equals(framework) || FRAMEWORK_45.equals(framework)) {
-            return framework;
+            if(!useVs2017Plus){
+            	return framework;
+            }
+            else {
+            	char[] chars = framework.toCharArray();
+            	chars[0] = Character.toUpperCase(chars[0]);
+            	return new String(chars);
+            }
+            	
         } else if (FRAMEWORK_OTHER.equals(framework)) {
             return replaceMacro(otherFramework, env, build);
         } else {
