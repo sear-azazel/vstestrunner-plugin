@@ -192,6 +192,10 @@
                         checked="${instance.failBuild}" default="true" />
         </f:entry>
 
+        <f:entry title="${%Do not use chcp command}" field="doNotUseChcpCommand">
+            <f:checkbox name="msBuildBuilder.doNotUseChcpCommand" value="${instance.doNotUseChcpCommand}"
+                        checked="${instance.doNotUseChcpCommand}" default="false"/>
+        </f:entry>
     </f:advanced>
 
 </j:jelly>
